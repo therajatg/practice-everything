@@ -1,70 +1,92 @@
-# Getting Started with Create React App
+import "./App.css";
+import { useState, useEffect, useRef } from "react";
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+All Examples are from webdev simplified.
 
-## Available Scripts
+export function App() {
+const [name, setName] = useState("");
+const [renderCount, setRenderCount] = useState(0);
+useEffect(() => {
+setRenderCount((renderCount) => renderCount + 1);
+});
+return (
+<div className="App">
+<input
+type="text"
+value={name}
+onChange={(e) => setName(e.target.value)}
+/>
+<h2>{name}</h2>
+<h2>{renderCount}</h2>
+</div>
+);
+}
 
-In the project directory, you can run:
+The infinite loop is running because the re-render happens after every state change and renderCount is also a state variable, and since useEffect has no dependency (since we want it to run after every render), along with change in name the state renderCount will also change and as soon as the renderCount will change useEffect will run and as soon as the useEffect will run, the renderCount will change and due to this state change re-rendering happens again and hence useEffect will run again and son on and so forth. same will happen even if you simply console log the renderCount since state is changing the App component will re-render.
+Now to avoid this (infinite loop) we use useRef hook.
 
-### `npm start`
+Example 1: correct way to do the above thing.
+export function App() {
+const [name, setName] = useState("");
+const renderCount = useRef(0);
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+useEffect(() => {
+renderCount.current = renderCount.current + 1;
+});
+return (
+<div className="App">
+<input
+type="text"
+value={name}
+onChange={(e) => setName(e.target.value)}
+/>
+<h2>{name}</h2>
+<h2>{renderCount.current}</h2>
+</div>
+);
+}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Example 2: inputRef for focus.
+export function App() {
+const [name, setName] = useState("");
+const inputRef = useRef();
 
-### `npm test`
+useEffect(() => {
+console.log(inputRef);
+});
+return (
+<div className="App">
+<input
+type="text"
+value={name}
+onChange={(e) => setName(e.target.value)}
+ref={inputRef}
+/>
+<h2>{name}</h2>
+<button onClick={() => inputRef.current.focus()}>Focus</button>
+</div>
+);
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Example 3: Remembering the previous value without additional renders
+export function App() {
+const [name, setName] = useState("");
+const nameRef = useRef();
 
-### `npm run build`
+useEffect(() => {
+nameRef.current = name;
+});
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+return (
+<div className="App">
+<input
+type="text"
+value={name}
+onChange={(e) => setName(e.target.value)}
+/>
+<h2>
+My cureent name is {name} and my previous name was {nameRef.current}
+</h2>
+</div>
+);
+}
