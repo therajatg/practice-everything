@@ -14,3 +14,9 @@ function getFilteredData(productList, state) {
     item.size === state.sizeFilter ? true : false
   );
 }
+
+function getSortedData(productList, state) {
+  // switch(state.sortBy){
+  //    case ""
+  // }
+}
