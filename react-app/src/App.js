@@ -1,33 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { MemoizedChild } from "./Child";
 
 export function App() {
-  const [name, setName] = useState("");
-  const inputRef = useRef();
-
-  useEffect(() => {
-    console.log(inputRef.current.value);
-  });
+  let name = true;
+  const [counter, setCounter] = useState(0);
   return (
-    <div className="App">
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        ref={inputRef}
-      />
-      <h2>{name}</h2>
-      <button onClick={() => inputRef.current.focus()}>Focus</button>
-    </div>
+    <>
+      <MemoizedChild name={name} />
+      <br />
+      <button
+        onClick={() => {
+          setCounter((counter) => counter + 1);
+          name = !name;
+        }}
+      >
+        {counter}
+      </button>
+    </>
   );
 }
-
-// import { SideNav, ProductCard } from "./components/index";
-
-// export function App() {
-//   return (
-//     <div className="main">
-//       <SideNav />
-//       <ProductCard />
-//     </div>
-//   );
-// }

@@ -10,6 +10,7 @@ useEffect(() => {
 setRenderCount((renderCount) => renderCount + 1);
 });
 return (
+
 <div className="App">
 <input
 type="text"
@@ -34,6 +35,7 @@ useEffect(() => {
 renderCount.current = renderCount.current + 1;
 });
 return (
+
 <div className="App">
 <input
 type="text"
@@ -55,6 +57,7 @@ useEffect(() => {
 console.log(inputRef);
 });
 return (
+
 <div className="App">
 <input
 type="text"
@@ -78,6 +81,7 @@ nameRef.current = name;
 });
 
 return (
+
 <div className="App">
 <input
 type="text"
@@ -90,3 +94,97 @@ My cureent name is {name} and my previous name was {nameRef.current}
 </div>
 );
 }
+
+import { SideNav, ProductCard } from "./components/index";
+import { useState, useRef, useMemo, useEffect } from "react";
+import "./App.css";
+
+const dark = { backgroundColor: "black", color: "white" };
+const light = { backgroundColor: "white", color: "black" };
+
+export function App() {
+const [counterOne, setCounterOne] = useState(0);
+const [toggle, setToggle] = useState(dark);
+
+// const double = useMemo(() => {
+// let i = 0;
+// while (i < 2000000000) i++;
+// return counterOne \* 2;
+// }, [counterOne]);
+
+const double = () => {
+// let i = 0;
+// while (i < 2000000000) i++;
+return counterOne \* 2;
+};
+
+return (
+<div style={toggle}>
+<button onClick={() => setCounterOne((counter) => counter + 1)}>
+Counter One: {counterOne}
+</button>
+<button
+onClick={() => {
+console.log("hahaha");
+toggle === dark ? setToggle(light) : setToggle(dark);
+}} >
+Change Theme
+</button>
+{double()}
+</div>
+);
+}
+
+// const fact = (num) => {
+// if (num < 2) {
+// return 1;
+// } else {
+// return num \* fact(num - 1);
+// }
+// };
+
+// const fibo = (num, arr = []) => {
+// let result;
+// if (arr[num]) {
+// return arr[num];
+// } else if (num < 3) {
+// result = 1;
+// } else {
+// result = fibo(num - 1, arr) + fibo(num - 2, arr);
+// }
+// arr[num] = result;
+// return result;
+// };
+
+// console.log(fibo(50));
+
+// return (
+// <div className="main">
+// <SideNav />
+// <ProductCard />
+// </div>
+// );
+// }
+
+// import { useState, useEffect, useRef } from "react";
+
+// export function App() {
+// const [name, setName] = useState("");
+// const inputRef = useRef();
+
+// useEffect(() => {
+// console.log(inputRef.current.value);
+// });
+// return (
+// <div className="App">
+// <input
+// type="text"
+// value={name}
+// onChange={(e) => setName(e.target.value)}
+// ref={inputRef}
+// />
+// <h2>{name}</h2>
+// <button onClick={() => inputRef.current.focus()}>Focus</button>
+// </div>
+// );
+// }

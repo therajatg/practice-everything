@@ -1,14 +1,28 @@
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
-body {
+/* body {
   min-height: 100vh;
-}
+} */
 
-.main {
+/* .main {
   display: flex;
   column-gap: 3rem;
+} */
+
+/* .App {
+  background-color: red;
+} */
+
+.dark {
+  background-color: black;
+  color: white;
+}
+
+.light {
+  background-color: white;
+  color: black;
 }
